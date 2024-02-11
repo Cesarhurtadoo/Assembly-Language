@@ -1,0 +1,32 @@
+		.global _start
+_start:
+_read:		@read syscall
+	
+		MOV R7, #3		@syscall number
+		MOV R0, #0		@input is keyboard
+		MOV R2, #1		@read in on character
+		LDR R1, =string	@string at label string:
+
+_togglecase:
+		
+		LDR R0, =string		@string at label string:
+		LDR R0, [R1]		@load char into register 0
+		ORR R0, R0, #0x20		@convert case using orr
+		STR R0, [R1]		@store new char in register 1
+
+_write:
+		MOV R7, #4			@syscall number	
+		MOV R0, #1			@stdout is monitor
+		MOV R2, #1			@move register 2
+		SWI 0
+
+_exit:
+		
+		MOV R7, #1
+		SWI 0
+
+.data
+string:
+.ascii "\n"			@empty ascii buffer
+
+/*Run*/
